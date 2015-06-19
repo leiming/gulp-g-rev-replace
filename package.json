@@ -1,0 +1,31 @@
+{
+  "name": "gulp-g-rev-replace",
+  "version": "0.0.1",
+  "description": "Rewrite occurences of filenames which have been renamed by QStatic.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leiming/gulp-g-rev-replace.git"
+  },
+  "keywords": [
+    "gulp"
+  ],
+  "author": "leiming",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leiming/gulp-g-rev-replace/issues"
+  },
+  "homepage": "https://github.com/leiming/gulp-g-rev-replace",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jasmine": "^2.0.1",
+    "gulp-util": "^3.0.5"
+  },
+  "dependencies": {
+    "gulp-util": "^3.0.5",
+    "through2": "^2.0.0"
+  }
+}
