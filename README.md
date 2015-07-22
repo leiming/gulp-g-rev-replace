@@ -2,17 +2,22 @@
 A [gulp](http://gulpjs.com/) plugin to rewrite occurences 
 of filenames which have been renamed by QStatic.
 
+> #### :warning: This plugin **MUST** be used in conjunction with *gulp-g-deploy* which is only published in qihoo private npm server.
+
 ## Table of Contents
 
 - [Install](#usage)
 - [Usage](#usage)
 - [Example](#example)
 
+![demo image](http://p9.qhimg.com/d/inn/6fc2716a/05918667-6FA6-4EE1-A50E-A08041AEFC3B.png)
+
 ## Install
 
-Install with [npm](https://npmjs.org/package/gulp-g-rev-replace)
+Install with [npm](https://npmjs.org/package/gulp-g-rev-replace):
 
-```
+```bash
+npm install --save-dev gulp-g-deploy // private npm server
 npm install --save-dev gulp-g-rev-replace
 ```
 
@@ -23,28 +28,21 @@ replace them and pass those files through. Assets inside the
 build blocks will be concatenated and passed through in a stream as well.
 
 ```js
-var gulp = require('gulp')
-var rev_replace = require('gulp-g-rev-replace')
+var defaultParams = {
+  namespace: 'default',
+  key: 'YOUR_PADDWORD',
+  version: 'rev_replace_0_0_2',
+  path: '/' + dirs.dist,
+  extensions: ['js', 'css', 'map']
+}
 
-var version = "0_0_4"
-var namespace = 'default'
-var base = 'src/web_inf/front/'
-
-// [../bundle.js] will be replaced to [http://s0.qhimg.com/default/bundle/0_0_4.js]
-
-gulp.task('rev-replace', function () {
-  return gulp.src(base + 'tpls/index.html')
-    .pipe(rev_replace({
-      js: {},
-      css: {}
-    }, {
-      keepBlockTags: false,
-      jsBasePath: base + 'reboot',
-      htmlBasePath: base + 'tpls',
-      namespace: namespace,
-      version: version
+gulp.task('deploy', function () {
+  return gulp.src(dirs.dist + '/' + inputFile + '.html')
+    .pipe(deploy(defaultParams))
+    .pipe(revReplace(['js', 'css'], {
+      keepBlockTags: false
     }))
-    .pipe(gulp.dest(base + 'online/'))
+    .pipe(gulp.dest(dirs.online))
 })
 ```
 
@@ -81,13 +79,13 @@ Blocks are expressed as:
 <head lang="en">
   <meta charset="UTF-8">
   <title>Test</title>
-    <link rel="stylesheet" href="http://s0.qhimg.com/default/bar/0_0_4.css"/>
+    <link rel="stylesheet" href="http://s0.qhimg.com/default/bar/rev_replace_0_0_2.css"/>
   </head>
 <body>
 <script src="http://libs.useso.com/js/jquery/1.9.1/jquery.min.js"></script>
-<script src="http://s0.qhimg.com/default/harry/0_0_4.js"></script>
-<script src="http://s0.qhimg.com/default/bar;foo/0_0_4.js?aaa=123&bbb=ccc"></script>
-<script src="http://s0.qhimg.com/default/bar;jam/0_0_4.js?aaa=123&bbb=ccc"></script>
+<script src="http://s0.qhimg.com/default/harry/rev_replace_0_0_2.js"></script>
+<script src="http://s0.qhimg.com/default/bar;foo/rev_replace_0_0_2.js?aaa=123&bbb=ccc"></script>
+<script src="http://s0.qhimg.com/default/bar;jam/rev_replace_0_0_2.js?aaa=123&bbb=ccc"></script>
 </body>
 </html>
 ```

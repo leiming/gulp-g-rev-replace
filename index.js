@@ -3,6 +3,7 @@
 var through = require('through2')
 var Parser = require('./lib/parser')
 var assign = require('./lib/Object.assign')
+var gutil = require('gulp-util')
 
 var PLUGIN_NAME = 'gulp-g-dev-replace'
 
@@ -17,11 +18,11 @@ module.exports = function index(options, userConfig) {
     resolvePaths: false
   }
 
-  if (typeof userConfig === 'object') {
-    assign(config, userConfig);
-  }
-
   return through.obj(function (file, encoding, done) {
+
+    if (typeof userConfig === 'object') {
+      assign(config, {templatePath: file.base}, file.options, userConfig);
+    }
 
     var parser = new Parser(tasks, config, file)
 
@@ -41,6 +42,8 @@ module.exports = function index(options, userConfig) {
         file.contents = contents;
 
         this.push(file)
+        gutil.log(
+          gutil.colors.cyan('---------- Replace End! ----------'))
         return done()
       }.bind(this))
     }
